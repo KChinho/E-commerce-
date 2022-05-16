@@ -45,6 +45,7 @@ export default{
 	},
 	methods:{
 		loginformRes:function(){
+
           this.$refs.loginformRes.resetFields()
 		},
 		loginAjax:function(){
@@ -55,7 +56,7 @@ export default{
              
 			  this.$message.success("登录成功")
              //将服务器传递来的toke 保存在本地
-             console.log(res)
+             
              window.sessionStorage.setItem("token",res.data.token)
 
              //编程式导航跳转页面

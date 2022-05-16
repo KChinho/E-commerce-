@@ -8,7 +8,13 @@ Vue.use(VueRouter);
 const routes = [
   { path:'', redirect:'/login' },
   { path: '/login', name: 'Login', component: Login },
-  { path: '/home', name: 'home', component: home }
+  { path: '/home', name: 'home', component: home,redirect: '/welcome', children:[
+   { path: '/welcome', component: () => import('../components/welcome.vue') },
+      { path: '/users', component: () => import('../components/users.vue') },
+      { path: '/rights', component: () => import('../components/rights.vue') },
+      { path: '/roles', component: () => import('../components/roles.vue') },
+      { path: '/categories', component: () => import('../components/cate.vue')}
+  ] }
 
 ];
 
