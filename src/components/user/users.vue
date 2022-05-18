@@ -65,7 +65,7 @@
          ></el-button>
 
          <el-tooltip   content="分配管理" :enterable="false" placement="top">
-              <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
+              <el-button type="warning" icon="el-icon-setting" size="mini" @click="edeitUserDateRoles(scope.row)"></el-button>
          </el-tooltip>
           
 
@@ -143,6 +143,37 @@
   </span>
 </el-dialog>
 
+<!--分配管理-->
+
+<el-dialog
+  title="编辑用户"
+  :visible.sync="usersEdeitRolesVisible"
+  width="50%"
+  @close="usersEdeitRolescc"
+  >
+  <!--主体内容-->
+  <div>
+    <p>当前用户：{{usersEdeitRoles.username
+               
+              }}</p>
+    <p>当前角色：{{ usersEdeitRoles.role_name}}</p>
+    <p>选择角色：
+    
+    <el-select v-model="usersFormRegion" placeholder="请选择">
+      <el-option :label="item.roleName" :value="item.id" v-for="item in rolesList" :key="item.id"></el-option>
+      
+    </el-select>
+ </p>
+  </div> 
+
+
+
+  <!--按钮-->
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="usersEdeitRolesVisible= false">取 消</el-button>
+    <el-button type="primary" @click="edeitRolesV()">确 定</el-button>
+  </span>
+</el-dialog>
 
 
 </div>
@@ -189,6 +220,14 @@
              total:0,
              dialogVisible:false,
              eidetDialogVisible:false,
+             usersEdeitRolesVisible:false,
+             rolesList: [],
+             usersEdeitRoles:{
+               id:'',
+               username:"",
+               role_name:"",
+             },
+             usersFormRegion:"",
              addRuleForm:{
              	username:'',
              	password:'',
@@ -331,7 +370,44 @@
              this.getdataUser();	
 
 
-         }
+         },
+         async edeitUserDateRoles(x){
+         
+         
+          this.usersEdeitRolesVisible=true;
+          this.usersEdeitRoles.id=x.id
+
+          this.usersEdeitRoles.username=x.username;
+          this.usersEdeitRoles.role_name=x.role_name;
+
+          //发送用户列表请求  获取数据
+          const {data :res}=await this.$http.get('roles')
+           if(res.meta.status !== 200) return 
+           
+
+           this.rolesList=res.data;
+        },
+        usersEdeitRolescc(){
+          this.usersFormRegion='';
+          this.rolesList={};
+          
+        },
+        //确定分配角色
+        async edeitRolesV(){
+          //发送请求
+          const am=""+this.usersFormRegion
+           
+           
+          const {data :res}= await this.$http.put("users/"+this.usersEdeitRoles.id+"/role",{rid:am})
+
+          if(res.meta.status !== 200) return this.$message.error(''+res.meta.msg)
+
+          this.$message.success('设置成功')
+       this.getdataUser();  
+        this.usersEdeitRolesVisible=false;
+
+        }
+        
 
 		}
 
