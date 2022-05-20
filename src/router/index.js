@@ -13,7 +13,10 @@ const routes = [
       { path: '/users', component: () => import('../components/user/users.vue') },
       { path: '/rights', component: () => import('../components/right/rights.vue') },
       { path: '/roles', component: () => import('../components/right/roles.vue') },
-      { path: '/categories', component: () => import('../components/cate.vue')}
+      { path: '/goods', component: () =>import('../components/goods/goods.vue') },
+      { path: '/goods/add', component: () =>import('../components/goods/add.vue') },
+      { path: '/params', component: () =>import('../components/goods/Params.vue') },
+      { path: '/categories', component: () =>import('../components/goods/Cate.vue') }
   ] }
 
 ];
